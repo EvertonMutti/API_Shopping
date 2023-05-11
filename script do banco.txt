@@ -86,5 +86,8 @@ ALTER TABLE produto
   DROP CONSTRAINT IF EXISTS categoria_fk, -- Remove a chave estrangeira existente, se existir
   ADD CONSTRAINT categoria_fk FOREIGN KEY (categoria_categoria_fk) REFERENCES categoria(categoria_id) ON DELETE CASCADE;
 
+ALTER TABLE users
+  ALTER COLUMN password TYPE VARCHAR(180);
+
 
 	
