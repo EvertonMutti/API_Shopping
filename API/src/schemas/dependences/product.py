@@ -14,4 +14,3 @@ class Produto(BaseModel):
     codigo: str
     is_Published: Optional[bool] = False
     categoria_categoria_fk: int
-    empresa_empresa_fk: int
