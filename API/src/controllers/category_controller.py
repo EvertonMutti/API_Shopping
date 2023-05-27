@@ -5,18 +5,19 @@ Created on Mon May  8 18:12:57 2023
 @author: Everton Castro
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from timeout_decorator import timeout, TimeoutError     
 from asyncpg.exceptions import PostgresError
 from src.connection.conexao import get_database_connection   
 from src.schemas.schema import Categoria
+from .dependences.logged_user import verifyLoggedUser
 
 
 router = APIRouter()
         
 @timeout(10)        
 @router.delete("/delete/category/{category_id}")
-async def delete_category(category_id: int):
+async def delete_category(category_id: int, logger_user = Depends(verifyLoggedUser)):
     conn = None
     try:
         conn = await get_database_connection()
@@ -36,8 +37,8 @@ async def delete_category(category_id: int):
         await conn.close()
         
 @timeout(10)
-@router.post("/create/categoria/")
-async def create_product(categoria: Categoria):
+@router.post("/create/category/")
+async def create_product(categoria: Categoria, logger_user = Depends(verifyLoggedUser)):
     conn = None
     try:
         conn = await get_database_connection()
@@ -58,13 +59,13 @@ async def create_product(categoria: Categoria):
         await conn.close()
         
 @timeout(10)
-@router.get("/select/categoria/{categoria_id}")
-async def read_categoria(categoria_id: int):
+@router.get("/select/category/{category_id}")
+async def read_categoria(category_id: int, logger_user = Depends(verifyLoggedUser)):
     conn = None
     try:
         conn = await get_database_connection()
         query = "SELECT * FROM categoria WHERE categoria_id = $1"
-        result = await conn.fetchrow(query, categoria_id)
+        result = await conn.fetchrow(query, category_id)
         if result is None:
             raise HTTPException(status_code=404, detail="categoria not found")
         return Categoria(**result)

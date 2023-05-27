@@ -5,18 +5,19 @@ Created on Mon May  8 18:11:38 2023
 @author: Everton Castro
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from timeout_decorator import timeout, TimeoutError     
 from asyncpg.exceptions import PostgresError
 from src.connection.conexao import get_database_connection   
 from src.schemas.schema import Empresa
+from .dependences.logged_user import verifyLoggedUser
 
 
 router = APIRouter()
         
 @timeout(10)        
 @router.delete("/delete/empresa/{empresa_id}")
-async def delete_empresa(empresa_id: int):
+async def delete_empresa(empresa_id: int, logger_user = Depends(verifyLoggedUser)):
     conn = None
     try:
         conn = await get_database_connection()
@@ -37,7 +38,7 @@ async def delete_empresa(empresa_id: int):
         
 @timeout(10)
 @router.post("/create/company/")
-async def create_product(empresa: Empresa):
+async def create_product(empresa: Empresa, logger_user = Depends(verifyLoggedUser)):
     conn = None
     try:
         conn = await get_database_connection()
@@ -63,7 +64,7 @@ async def create_product(empresa: Empresa):
         
 @timeout(10)
 @router.get("/select/empresa/{empresa_id}")
-async def read_empresa(empresa_id: int):
+async def read_empresa(empresa_id: int, logger_user = Depends(verifyLoggedUser)):
     conn = None
     try:
         conn = await get_database_connection()
