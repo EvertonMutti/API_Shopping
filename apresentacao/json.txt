@@ -1,0 +1,18 @@
+Create User{
+  "user_id": 0,
+  "name": "teste",
+  "email": "teste@teste.com",
+  "password": "teste",
+  "empresa_fk": 1
+}
+
+Create product:
+{
+  "nome": "string",
+  "preco": 0,
+  "descricao": "string",
+  "codigo": "string",
+  "is_Published": false,
+  "categoria_categoria_fk": 1,
+  "empresa_empresa_fk": 1
+}
