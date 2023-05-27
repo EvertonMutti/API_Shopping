@@ -10,6 +10,6 @@ from typing import Optional
 
 class UserResponse(BaseModel):
     user_id: Optional[int] = None
-    name : str 
-    email : str 
+    username : Optional[str]  = None
+    email : Optional[str ] = None
     
