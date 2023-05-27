@@ -8,7 +8,6 @@ Created on Sat Mar 18 19:26:24 2023
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import router
-
 app = FastAPI()
 
 origins = ["http://localhost",
