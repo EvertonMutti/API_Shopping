@@ -8,11 +8,10 @@ Create User{
 
 Create product:
 {
-  "nome": "string",
-  "preco": 0,
-  "descricao": "string",
-  "codigo": "string",
-  "is_Published": false,
-  "categoria_categoria_fk": 1,
-  "empresa_empresa_fk": 1
+  "nome": "Roleta da blaze",
+  "preco": 35,
+  "descricao": "Holândes da blaze",
+  "codigo": "123123132",
+  "is_Published": true,
+  "categoria_categoria_fk": 1
 }
