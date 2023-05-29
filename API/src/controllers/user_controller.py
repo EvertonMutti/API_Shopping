@@ -4,8 +4,9 @@ Created on Mon May  8 18:14:51 2023
 
 @author: Everton Castro
 """
-from fastapi import APIRouter, HTTPException, status
-from src.schemas.schema import User, Login, UserResponse
+from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi.security import OAuth2PasswordRequestForm
+from src.schemas.schema import User, UserResponse
 from src.connection.conexao import get_database_connection   
 from src.security import hash_provider, token_provider
 
@@ -42,20 +43,20 @@ async def signup(users: User):
         await conn.close()
 
 @router.post("/login")
-async def Login(login: Login):
+async def Login(login: OAuth2PasswordRequestForm = Depends()):
     conn = None
     try:
         conn = await get_database_connection()
     
         query_verify_user = "SELECT email, password FROM users WHERE email = $1"
-        user = await conn.fetchrow(query_verify_user, login.email)
+        user = await conn.fetchrow(query_verify_user, login.username)
     
         if not user or not hash_provider.verifyPassword(login.password,user['password']):#hash password
             return HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                                  detail=f'Email ou Senha incorreta{user}')
     
-        token = token_provider.createAcessToken({'sub': login.email})
-        return {'email': login.email, 'token': token}
+        token = token_provider.createAcessToken({'sub': login.username})
+        return {"access_token": token, "token_type": "bearer"}
     
     finally:
        await conn.close()

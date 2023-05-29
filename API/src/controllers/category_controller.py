@@ -38,7 +38,7 @@ async def delete_category(category_id: int, logger_user = Depends(verifyLoggedUs
         
 @timeout(10)
 @router.post("/create/category/")
-async def create_product(categoria: Categoria, logger_user = Depends(verifyLoggedUser)):
+async def create_category(categoria: Categoria, logger_user = Depends(verifyLoggedUser)):
     conn = None
     try:
         conn = await get_database_connection()
@@ -60,7 +60,7 @@ async def create_product(categoria: Categoria, logger_user = Depends(verifyLogge
         
 @timeout(10)
 @router.get("/select/category/{category_id}")
-async def read_categoria(category_id: int, logger_user = Depends(verifyLoggedUser)):
+async def read_category(category_id: int, logger_user = Depends(verifyLoggedUser)):
     conn = None
     try:
         conn = await get_database_connection()
@@ -69,6 +69,29 @@ async def read_categoria(category_id: int, logger_user = Depends(verifyLoggedUse
         if result is None:
             raise HTTPException(status_code=404, detail="categoria not found")
         return Categoria(**result)
+
+    except PostgresError as e:
+        return HTTPException(status_code=409, detail=f"Error {e}")
+
+    except TimeoutError as e:
+        return HTTPException(status_code=408, detail=f"Error {e}")
+
+    finally:
+        await conn.close()
+        
+        
+@timeout(10)
+@router.get("/select/categorys/")
+async def showCategoroy(logger_user = Depends(verifyLoggedUser)):
+    conn = None
+    try:
+        conn = await get_database_connection()
+        query = "SELECT * FROM categoria"
+        result = await conn.fetch(query)
+        if result is None:
+            raise HTTPException(status_code=404, detail="categoria not found")
+        categorias = [Categoria(**row) for row in result]
+        return categorias
 
     except PostgresError as e:
         return HTTPException(status_code=409, detail=f"Error {e}")

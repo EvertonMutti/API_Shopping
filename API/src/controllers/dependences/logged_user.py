@@ -12,19 +12,19 @@ from src.connection.conexao import get_database_connection
 from src.security.token_provider import verifyAcessToken
 
 
-oauth2_schema = OAuth2PasswordBearer(tokenUrl="/User/logins")
+oauth2_schema = OAuth2PasswordBearer(tokenUrl="/User/login")
 
 
 async def verifyLoggedUser(token: str = Depends(oauth2_schema)):
+    conn = None
     try:
-        conn = None
+        
         payload = verifyAcessToken(token)
     
         conn = await get_database_connection()
         
         query_verify_user = "SELECT email, empresa_empresa_fk  FROM users WHERE email = $1"
         user = await conn.fetchrow(query_verify_user, payload)
-        
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         return user
@@ -36,4 +36,5 @@ async def verifyLoggedUser(token: str = Depends(oauth2_schema)):
         )
         
     finally:
-        await conn.close()
+        if conn:
+            await conn.close()

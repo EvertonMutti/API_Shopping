@@ -38,7 +38,7 @@ async def delete_empresa(empresa_id: int, logger_user = Depends(verifyLoggedUser
         
 @timeout(10)
 @router.post("/create/company/")
-async def create_product(empresa: Empresa, logger_user = Depends(verifyLoggedUser)):
+async def create_empresa(empresa: Empresa, logger_user = Depends(verifyLoggedUser)):
     conn = None
     try:
         conn = await get_database_connection()

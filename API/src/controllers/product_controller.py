@@ -41,6 +41,7 @@ async def create_product(produto: Produto, logger_user = Depends(verifyLoggedUse
     conn = None
     try:
         conn = await get_database_connection()
+        
         empresa_id = logger_user['empresa_empresa_fk']
 
         values = (produto.nome, produto.preco,
@@ -89,8 +90,34 @@ async def read_produto(product_id: int, logger_user = Depends(verifyLoggedUser))
         result = await conn.fetchrow(query, product_id, empresa_id)
         
         if result is None:
-            raise HTTPException(status_code=404, detail=f"produto not found{empresa_id}")
+            raise HTTPException(status_code=404, detail="product not found")
         return Produto(**result)
+
+    except PostgresError as e:
+        return HTTPException(status_code=409, detail=f"Error {e}")
+
+    except TimeoutError as e:
+        return HTTPException(status_code=408, detail=f"Error {e}")
+
+    finally:
+        await conn.close()
+        
+@timeout(10)
+@router.get("/select/products/")
+async def showProduto( logger_user = Depends(verifyLoggedUser)):
+    conn = None
+    try:
+        conn = await get_database_connection()
+        
+        empresa_id = logger_user['empresa_empresa_fk']
+        query = "SELECT * FROM produto WHERE empresa_empresa_fk = $1"
+        result = await conn.fetch(query, empresa_id)
+        
+        if result is None:
+            raise HTTPException(status_code=404, detail="product not found")
+            
+        produtos = [Produto(**row) for row in result]
+        return produtos
 
     except PostgresError as e:
         return HTTPException(status_code=409, detail=f"Error {e}")
