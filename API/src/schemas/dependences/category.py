@@ -7,4 +7,5 @@ Created on Mon May  8 18:19:36 2023
 from pydantic import BaseModel
 
 class Categoria(BaseModel):
+    categoria_id: int
     nome: str
