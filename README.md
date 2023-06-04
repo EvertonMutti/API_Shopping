@@ -14,5 +14,7 @@
 <br>
 <h2>\Coisas para se fazer:</h2>
 <p>\Casca da API - OK</p>
-<p>\Modelagem de banco</p>
+<p>\Token Jwt - OK</p>
+<p>\Segurança - OK</p>
+<p>\Modelagem de banco - OK</p>
 <p>\Rota Update</p>
