@@ -1,0 +1,5 @@
+insert into empresa values(Default,'87960981000105', 'Amanzon', 'Amazon Ltda', 'amazon@amazonas.com');
+insert into empresa values(Default,'87960981000106', 'Blaze', 'Blaze Ltda', 'blaze@holanda.com');
+
+insert into categoria values (Default, 'Service')
+insert into categoria values (Default, 'Cassino')

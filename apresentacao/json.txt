@@ -1,0 +1,17 @@
+Create User{
+  "user_id": 0,
+  "name": "teste",
+  "email": "teste@teste.com",
+  "password": "teste",
+  "empresa_fk": 1
+}
+
+Create product:
+{
+  "nome": "Roleta da blaze",
+  "preco": 35,
+  "descricao": "Holândes da blaze",
+  "codigo": "123123132",
+  "is_Published": true,
+  "categoria_categoria_fk": 1
+}

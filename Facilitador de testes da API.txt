@@ -1,0 +1,25 @@
+Router Create Method Post:
+
+/create/product/:
+{
+    "nome": "xinguilingue",
+    "preco": 25.6,
+    "descricao": "língua incompreendida pelos nativos brasileiros",
+    "codigo": "65216165",
+    "is_Published": true,
+    "categoria_categoria_fk": 1,
+    "empresa_empresa_fk": 1
+}
+
+/create/company/
+{
+    "cnpj": "99999999999",
+    "razao_social": "empresalegal",
+    "nome_fantasia": "empresa",
+    "email": "admin@admin.com"
+}
+
+/create/categoria/
+{
+    "nome": "Eletrônicos"
+}

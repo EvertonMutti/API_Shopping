@@ -4,23 +4,23 @@ Created on Sat Mar 18 19:26:24 2023
 
 @author: Everton
 """
-from routers.insert import create_product
-from routers.insert import create_categoria 
-from routers.insert import create_empresa 
-from routers.delete import delete_product 
-from routers.select import select_product
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from routers import router
+app = FastAPI()
 
-app = FastAPI(title='API Shopping')
-routers = [
-        select_product.router,
-        delete_product.router,
-        create_product.router,
-        create_categoria.router,
-        create_empresa.router
-    ]
-    
-for router in routers:
-    app.include_router(router)
+origins = ["http://localhost",
+           "http://localhost:8080",
+           ]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(router)
                 

@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS empresa (
   empresa_id SERIAL NOT null,
-  cnpj VARCHAR(11) NOT NULL,
+  cnpj VARCHAR(14) NOT NULL,
   razao_social varchar(80) not null,
 	nome_fantasia varchar(20),
   nome VARCHAR(120) NULL,
@@ -86,5 +86,11 @@ ALTER TABLE produto
   DROP CONSTRAINT IF EXISTS categoria_fk, -- Remove a chave estrangeira existente, se existir
   ADD CONSTRAINT categoria_fk FOREIGN KEY (categoria_categoria_fk) REFERENCES categoria(categoria_id) ON DELETE CASCADE;
 
+ALTER TABLE users
+  ALTER COLUMN password TYPE VARCHAR(180);
+
+alter table empresa drop column nome;
+
+alter table empresa alter column cnpj type varchar(14);
 
 	

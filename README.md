@@ -2,13 +2,7 @@
 
 <h2>requerimentos:</h2>
 <br>
-<code>pip install asyncpg</code>
-<br>
-<code>pip install fastapi</code>
-<br>
-<code>pip install uvicorn</code>
-<br>
-<code>pip install timeout_decorator</code>
+<code>pip install -r requirements.txt</code>
   
 <h2>Dicas de aplicativos para testar sua API</h2>  
 <p><b>--postman app</b></p>
@@ -20,5 +14,7 @@
 <br>
 <h2>\Coisas para se fazer:</h2>
 <p>\Casca da API - OK</p>
-<p>\Modelagem de banco</p>
+<p>\Token Jwt - OK</p>
+<p>\Segurança - OK</p>
+<p>\Modelagem de banco - OK</p>
 <p>\Rota Update</p>
