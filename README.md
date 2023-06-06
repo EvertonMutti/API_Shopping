@@ -17,4 +17,4 @@
 <p>\Token Jwt - OK</p>
 <p>\Segurança - OK</p>
 <p>\Modelagem de banco - OK</p>
-<p>\Rota Update</p>
+<p>\Rota Update - OK</p>
