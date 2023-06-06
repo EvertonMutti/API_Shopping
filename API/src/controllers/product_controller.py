@@ -127,3 +127,31 @@ async def showProduto( logger_user = Depends(verifyLoggedUser)):
 
     finally:
         await conn.close()
+
+@timeout(10)
+@router.put("/update/product/{product_id}")
+async def updateProduct( product_id: int, product: Produto, logger_user = Depends(verifyLoggedUser) ):
+    conn = None
+    try:
+
+        conn = await get_database_connection()
+        query = "SELECT produtos_id FROM produtos WHERE produtos_id = $1"
+        result = await conn.fetch(query)
+
+        values = ( product.nome, product.preco, product.descricao, product.codigo, product.is_Published, product.categoria_categoria_fk, product_id)
+
+        if result is None:
+            raise HTTPException(status_cod=404, detail="product not fount")
+        else:
+            if values:
+                query = "UPDATE produtos SET nome = $1, preco = $2, descricao = $3, codigo = $4, is_Published = $5, categoria_categoria_fk = $6, produtos_id = $7 WHERE produtos_id = $7"
+                await conn.execute(query, **values)
+                return { "message": "Ok" }
+
+    except PostgresError as e:
+        return HTTPException(status_cod=409, detail=f"Error {e}")
+    except TimeoutError as e:
+        return HTTPException(status_code=408, detail=f"Error {e}")
+
+    finally:
+        await conn.close()

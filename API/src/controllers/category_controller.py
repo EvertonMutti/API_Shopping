@@ -103,8 +103,8 @@ async def showCategoroy(logger_user = Depends(verifyLoggedUser)):
         await conn.close()
 
 @timeout(10)
-@router.put("/select/category/{category_id}")
-async def updateCategory(category_id: int,categoria: Categoria, logger_user = Depends(verifyLoggedUser)):
+@router.put("/update/category/{category_id}")
+async def updateCategory(category_id: int, categoria: Categoria, logger_user = Depends(verifyLoggedUser)):
     conn = None
     try:
         conn = await get_database_connection()
@@ -117,8 +117,8 @@ async def updateCategory(category_id: int,categoria: Categoria, logger_user = De
         if result is None:
             raise HTTPException(status_code=404, detail="categoria not found")
         else:
-            query = "UPDATE categoria SET nome = ($1) WHERE categoria_id = ($2)"
-            await conn.execute(query, values)
+            query = "UPDATE categoria SET nome = $1 WHERE categoria_id = $2"
+            await conn.execute(query, *values)
             return {"message": "Ok"}
             # EXECUTE MANY
         
