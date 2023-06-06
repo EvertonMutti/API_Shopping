@@ -86,7 +86,7 @@ async def read_produto(product_id: int, logger_user = Depends(verifyLoggedUser))
         conn = await get_database_connection()
         
         empresa_id = logger_user['empresa_empresa_fk']
-        query = "SELECT * FROM produto WHERE produtos_id = $1 and empresa_empresa_fk = $2"
+        query = "SELECT * FROM produto WHERE produtos_id = $1 and empresa_empresa_fk = $2 order by preco"
         result = await conn.fetchrow(query, product_id, empresa_id)
         
         if result is None:

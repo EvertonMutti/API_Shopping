@@ -35,7 +35,8 @@ async def delete_empresa(empresa_id: int, logger_user = Depends(verifyLoggedUser
         
     finally:
         await conn.close()
-        
+
+"""        
 @timeout(10)
 @router.post("/create/company/")
 async def create_empresa(empresa: Empresa, logger_user = Depends(verifyLoggedUser)):
@@ -62,35 +63,15 @@ async def create_empresa(empresa: Empresa, logger_user = Depends(verifyLoggedUse
     finally:
         await conn.close()
 
-@timeout(10)
-@router.get("/select/empresas/")
-async def read_empresa( logger_user = Depends(verifyLoggedUser)):
-    conn = None
-    try:
-        conn = await get_database_connection()
-        query = "SELECT * FROM empresa"
-        result = await conn.fetch(query)
-        if result is None:
-            raise HTTPException(status_code=404, detail="empresa not found")
-        
-        empresas = [Empresa(**row) for row in result]
-        return empresas
+"""
 
-
-    except PostgresError as e:
-        return {"message": f"Error {e}"}
-
-    except TimeoutError as e:
-        return {"message": f"Error {e}"}
-
-    finally:
-        await conn.close()
 
 @timeout(10)
-@router.get("/select/empresa/{empresa_id}")
-async def read_empresa(empresa_id: int, logger_user = Depends(verifyLoggedUser)):
+@router.get("/select/empresa/")
+async def read_empresa(logger_user = Depends(verifyLoggedUser)):
     conn = None
     try:
+        empresa_id = logger_user['empresa_empresa_fk']
         conn = await get_database_connection()
         query = "SELECT * FROM empresa WHERE empresa_id = $1"
         result = await conn.fetchrow(query, empresa_id)
