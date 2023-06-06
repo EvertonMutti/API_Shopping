@@ -62,8 +62,10 @@ async def create_empresa(empresa: Empresa, logger_user = Depends(verifyLoggedUse
 
     finally:
         await conn.close()
+
 """
-        
+
+
 @timeout(10)
 @router.get("/select/empresa/")
 async def read_empresa(logger_user = Depends(verifyLoggedUser)):
@@ -76,6 +78,35 @@ async def read_empresa(logger_user = Depends(verifyLoggedUser)):
         if result is None:
             raise HTTPException(status_code=404, detail="empresa not found")
         return Empresa(**result)
+
+    except PostgresError as e:
+        return {"message": f"Error {e}"}
+
+    except TimeoutError as e:
+        return {"message": f"Error {e}"}
+
+    finally:
+        await conn.close()
+
+@timeout(10)
+@router.put("/update/empresa/{empresa_cnpj}")
+async def updateEmpresa(empresa_cnpj: str, empresa: Empresa, logger_user = Depends(verifyLoggedUser)):
+    conn = None
+    try:
+        conn = await get_database_connection()
+        query = "SELECT cnpj FROM empresa WHERE cnpj = $1"
+        
+        values = (empresa.nome_fantasia, empresa.razao_social,
+                  empresa.email, empresa.cnpj, empresa_cnpj)
+        
+        result = await conn.fetchrow(query, empresa_cnpj)
+        if result is None:
+            raise HTTPException(status_cod=400, detail="Empresa not found")
+        else:
+            if values:
+                query = "UPDATE empresa SET nome_fantasia = $1, razao_social = $2, email = $3, cnpj = $4 WHERE cnpj = $5"
+                await conn.execute(query, *values)
+                return { "message" : "Ok" }
 
     except PostgresError as e:
         return {"message": f"Error {e}"}

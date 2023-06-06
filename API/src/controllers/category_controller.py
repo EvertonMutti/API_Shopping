@@ -103,7 +103,7 @@ async def showCategoroy(logger_user = Depends(verifyLoggedUser)):
         await conn.close()
 
 @timeout(10)
-@router.put("/select/category/{category_id}")
+@router.put("/update/category/{category_id}")
 async def updateCategory(category_id: int, categoria: Categoria, logger_user = Depends(verifyLoggedUser)):
     conn = None
     try:
